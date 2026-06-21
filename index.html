@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خالص دودھ کا آرڈر</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            text-align: right;
+            padding: 20px;
+            direction: rtl;
+        }
+        .order-form {
+            background-color: #ffffff;
+            max-width: 450px;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 5px solid #25D366; /* WhatsApp Green */
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], input[type="tel"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            background-color: #25D366;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #128C7E;
+        }
+    </style>
+</head>
+<body>
+
+<div class="order-form">
+    <h2>خالص دودھ کا آرڈر فارم</h2>
+    
+    <div class="form-group">
+        <label for="name">نام:</label>
+        <input type="text" id="name" placeholder="اپنا نام لکھیں" required>
+    </div>
+
+    <div class="form-group">
+        <label for="phone">فون نمبر:</label>
+        <input type="tel" id="phone" placeholder="اپنا واٹس ایپ نمبر لکھیں" required>
+    </div>
+
+    <div class="form-group">
+        <label for="location">لوکیشن (پتہ):</label>
+        <input type="text" id="location" placeholder="گھر کا پتہ یا لوکیشن لکھیں" required>
+    </div>
+
+    <div class="form-group">
+        <label for="quantity">دودھ کتنے کلو؟</label>
+        <input type="number" id="quantity" min="1" placeholder="مثال کے طور پر: 2" required>
+    </div>
+
+    <button onclick="sendOrder()">خالص دودھ کا آرڈر دیں</button>
+</div>
+
+<script>
+function sendOrder() {
+    // 1. یہاں اپنا واٹس ایپ نمبر لکھیں (بغیر + یا 00 کے، کنٹری کوڈ 92 کے ساتھ)
+    const whatsappNumber = "923001234567"; 
+
+    // 2. فارم سے ڈیٹا حاصل کریں
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const location = document.getElementById('location').value;
+    const quantity = document.getElementById('quantity').value;
+
+    // چیک کریں کہ تمام معلومات پُر ہیں یا نہیں
+    if(!name || !phone || !location || !quantity) {
+        alert("براہ کرم تمام معلومات درج کریں!");
+        return;
+    }
+
+    // 3. واٹس ایپ کا میسج تیار کریں
+    const message = `*نیا آرڈر (خالص دودھ)*\n\n` +
+                    `*نام:* ${name}\n` +
+                    `*فون نمبر:* ${phone}\n` +
+                    `*لوکیشن:* ${location}\n` +
+                    `*مقدار:* ${quantity} کلو`;
+
+    // 4. ٹیکسٹ کو یو آر ایل فارمیٹ میں تبدیل کریں
+    const encodedMessage = encodeURIComponent(message);
+
+    // 5. واٹس ایپ کا لنک بنا کر کسٹمر کو ری ڈائریکٹ کریں
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    
+    window.open(whatsappURL, '_blank');
+}
+</script>
+
+</body>
+</html>
