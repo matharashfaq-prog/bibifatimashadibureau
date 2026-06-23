@@ -65,11 +65,11 @@
 </div>
 
 <script>
-// آپ کے پروجیکٹ کی بالکل درست کنفگریشن
+// آپ کا بالکل درست ایشیا ریجن والا لنک یہاں لگا دیا ہے
 const firebaseConfig = {
   apiKey: "AIzaSyC8py3oEQFtzWIT_K0nIMK5oHoQYG6-zig",
   authDomain: "milk-order-48d48.firebaseapp.com",
-  databaseURL: "https://milk-order-48d48-default-rtdb.firebaseio.com/", // 👈 آپ کا لائیو یو آر ایل
+  databaseURL: "https://milk-order-48d48-default-rtdb.asia-southeast1.firebasedatabase.app/", // 👈 درست لنک
   projectId: "milk-order-48d48",
   storageBucket: "milk-order-48d48.firebasestorage.app",
   messagingSenderId: "171586337857",
@@ -94,10 +94,9 @@ function sendOrder() {
         return;
     }
 
-    // بٹن کو عارضی طور پر ڈس ایبل کریں تاکہ بار بار کلک نہ ہو
     const orderTimestamp = new Date().toLocaleString("en-US", {timeZone: "Asia/Karachi"}); 
     
-    // فائر بیس میں ڈیٹا بھیجنے کی کوشش
+    // ڈیٹا فائر بیس بھیجیں
     database.ref('orders').push({
         customer_name: name,
         customer_phone: phone,
@@ -107,13 +106,12 @@ function sendOrder() {
         ordered_at: orderTimestamp
     })
     .then(() => {
-        // اگر کامیابی سے سیو ہو گیا
+        // کامیابی کی صورت میں واٹس ایپ اوپن ہوگا
         openWhatsApp(name, phone, location, quantity, whatsappNumber);
     })
     .catch((error) => {
         console.error("Firebase Error: ", error);
-        // اگر فائر بیس کے رولز لاک ہیں، تب بھی واٹس ایپ لازمی کھلے گا تاکہ گاہک کا آرڈر ضائع نہ ہو!
-        alert("ڈیٹا بیس کنکشن کا مسئلہ ہے، لیکن آپ کا آرڈر واٹس ایپ پر بھیجا جا رہا ہے۔");
+        alert("ڈیٹا بیس کا مسئلہ ہے، لیکن واٹس ایپ اوپن ہو رہا ہے جس پر آرڈر بھیج دیں۔");
         openWhatsApp(name, phone, location, quantity, whatsappNumber);
     });
 }
