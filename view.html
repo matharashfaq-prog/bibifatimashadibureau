@@ -144,9 +144,11 @@ const auth = firebase.auth();
 const database = firebase.database();
 
 // 🚀 1. Google Sign-In Function
+// 🚀 1. Google Sign-In Function (موبائل فرینڈلی ری ڈائریکٹ طریقہ)
 function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
+    auth.signInWithRedirect(provider);
+}
     .then((result) => {
         console.log("Login Successful!", result.user);
     })
