@@ -3,95 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bibi Fatima Shadi Bureau - رشتہ رجسٹریشن فارم</title>
+    <title>Bibi Fatima Shadi Bureau - ایڈمن ڈیش بورڈ</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fce4ec; /* Soft Rose Background */
-            text-align: right;
+            background-color: #f5f5f5;
             padding: 20px;
             direction: rtl;
+            text-align: right;
         }
-        .order-form {
-            background-color: #ffffff;
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-top: 5px solid #d81b60; /* Premium Pink */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        h2 { text-align: center; color: #d81b60; margin-bottom: 5px; font-size: 24px; }
-        h4 { text-align: center; color: #555; margin-top: 0; margin-bottom: 25px; font-weight: normal; }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; margin-bottom: 6px; font-weight: bold; color: #333; font-size: 14px; }
-        label span { color: #888; font-weight: normal; font-size: 13px; }
-        input[type="text"], input[type="tel"], input[type="number"], select, textarea {
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; text-align: right;
-        }
-        select { direction: rtl; }
-        textarea { resize: vertical; height: 80px; }
-        button {
-            width: 100%; background-color: #25D366; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 10px;
-        }
-        button:hover { background-color: #128C7E; }
+        h2 { color: #d81b60; border-bottom: 3px solid #d81b60; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background-color: #d81b60; color: white; }
+        tr:nth-child(even) { background-color: #fbf0f3; }
+        .status-btn { padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+        .pending { background-color: #ffc107; color: black; }
+        .reviewed { background-color: #28a745; color: white; }
+        .whatsapp-link { color: #128C7E; text-decoration: none; font-weight: bold; }
     </style>
 
-    <!-- فائر بیس لائبریریز -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<div class="order-form">
-    <h2>بی بی فاطمہ شادی بیورو</h2>
-    <h4>Bibi Fatima Shadi Bureau</h4>
+<div class="container">
+    <h2>💍 بی بی فاطمہ شادی بیورو - موصول شدہ رشتے (ڈیش بورڈ)</h2>
     
-    <div class="form-group">
-        <label>پورا نام <span>/ Full Name:</span></label>
-        <input type="text" id="name" placeholder="اپنا نام لکھیں" required>
-    </div>
-
-    <div class="form-group">
-        <label>فون نمبر (واٹس ایپ) <span>/ WhatsApp Number:</span></label>
-        <input type="tel" id="phone" placeholder="مثال: 03001234567" required>
-    </div>
-
-    <div class="form-group">
-        <label>رشتہ کس کے لیے مطلوب ہے؟ <span>/ Proposal For:</span></label>
-        <select id="gender" required>
-            <option value="">انتخاب کریں / Select</option>
-            <option value="Male (لڑکا)">لڑکا / Male</option>
-            <option value="Female (لڑکی)">لڑکی / Female</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>عمر <span>/ Age:</span></label>
-        <input type="number" id="age" min="18" max="70" placeholder="عمر درج کریں" required>
-    </div>
-
-    <div class="form-group">
-        <label>ذات یا برادری <span>/ Caste or Sect:</span></label>
-        <input type="text" id="caste" placeholder="مثال: جٹ، راجپوت، سید وغیرہ" required>
-    </div>
-
-    <div class="form-group">
-        <label>تعلیم اور ملازمت <span>/ Education & Job:</span></label>
-        <input type="text" id="education" placeholder="تعلیم اور کاروبار/ملازمت لکھیں" required>
-    </div>
-
-    <div class="form-group">
-        <label>شہر یا موجودہ لوکیشن <span>/ City or Location:</span></label>
-        <input type="text" id="location" placeholder="اپنا شہر یا پتہ لکھیں" required>
-    </div>
-
-    <div class="form-group">
-        <label>مطلوبہ رشتہ کی ڈیمانڈ <span>/ Requirements for Partner:</span></label>
-        <textarea id="requirements" placeholder="آپ کو کیسا رشتہ چاہیے؟ (عمر، تعلیم، ذات وغیرہ)" required></textarea>
-    </div>
-
-    <button onclick="sendProposal()">رشتہ رجسٹرڈ کریں / Register Proposal</button>
+    <table id="proposalsTable">
+        <thead>
+            <tr>
+                <th>تاریخ / وقت</th>
+                <th>نام</th>
+                <th>جنس (Gender)</th>
+                <th>عمر (Age)</th>
+                <th>ذات (Caste)</th>
+                <th>تعلیم / نوکری</th>
+                <th>شہر (City)</th>
+                <th>ڈیمانڈ (Requirements)</th>
+                <th>رابطہ کریں</th>
+                <th>اسٹیٹس</th>
+            </tr>
+        </thead>
+        <tbody id="proposalsBody">
+            <tr>
+                <td colspan="10">رشتے لوڈ ہو رہے ہیں...</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <script>
@@ -109,58 +77,49 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-function sendProposal() {
-    const whatsappNumber = "923076385077"; 
+database.ref('proposals').on('value', (snapshot) => {
+    const proposalsBody = document.getElementById('proposalsBody');
+    proposalsBody.innerHTML = ''; 
 
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const gender = document.getElementById('gender').value;
-    const age = document.getElementById('age').value;
-    const caste = document.getElementById('caste').value;
-    const education = document.getElementById('education').value;
-    const location = document.getElementById('location').value;
-    const requirements = document.getElementById('requirements').value;
-
-    if(!name || !phone || !gender || !age || !caste || !education || !location || !requirements) {
-        alert("براہ کرم تمام معلومات درج کریں! / Please fill all fields!");
+    if (!snapshot.exists()) {
+        proposalsBody.innerHTML = '<tr><td colspan="10">کوئی ریکارڈ موجود نہیں ہے۔</td></tr>';
         return;
     }
 
-    const timestamp = new Date().toLocaleString("en-US", {timeZone: "Asia/Karachi"}); 
-    
-    // فائر بیس میں نیا فولڈر 'proposals' بنے گا
-    database.ref('proposals').push({
-        name: name,
-        phone: phone,
-        gender: gender,
-        age: age,
-        caste: caste,
-        education: education,
-        location: location,
-        requirements: requirements,
-        status: "Pending",
-        registered_at: timestamp
-    })
-    .then(() => {
-        // واٹس ایپ میسج کی تیاری
-        const message = `*Bibi Fatima Shadi Bureau*\n` +
-                        `*جدید رشتہ رجسٹریشن فارم*\n\n` +
-                        `*نام / Name:* ${name}\n` +
-                        `*رابطہ / Phone:* ${phone}\n` +
-                        `*جنس / Gender:* ${gender}\n` +
-                        `*عمر / Age:* ${age} سال\n` +
-                        `*ذات / Caste:* ${caste}\n` +
-                        `*تعلیم و نوکری / Education:* ${education}\n` +
-                        `*شہر / City:* ${location}\n` +
-                        `*ڈیمانڈ / Requirements:* ${requirements}`;
+    const data = snapshot.val();
+    const ids = Object.keys(data).reverse(); // نیا رشتہ سب سے اوپر آئے گا
 
-        const encodedMessage = encodeURIComponent(message);
-        window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
-    })
-    .catch((error) => {
-        console.error("Firebase Error: ", error);
-        alert("سسٹم میں خرابی ہے، لیکن آپ کا رشتہ واٹس ایپ پر بھیجا جا رہا ہے۔");
+    ids.forEach((id) => {
+        const item = data[id];
+        const statusClass = item.status === 'Pending' ? 'pending' : 'reviewed';
+        const statusText = item.status === 'Pending' ? 'پینڈنگ' : 'دیکھ لیا (Checked)';
+
+        const row = `
+            <tr>
+                <td>${item.registered_at || '---'}</td>
+                <td><b>${item.name}</b></td>
+                <td><span style="color:#d81b60; font-weight:bold;">${item.gender}</span></td>
+                <td>${item.age} سال</td>
+                <td>${item.caste}</td>
+                <td>${item.education}</td>
+                <td>${item.location}</td>
+                <td style="max-width:200px; text-align:right;">${item.requirements}</td>
+                <td><a class="whatsapp-link" href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank">💬 واٹس ایپ چیٹ</a></td>
+                <td>
+                    ${item.status === 'Pending' ? 
+                    `<button onclick="markAsReviewed('${id}')" class="status-btn pending" style="border:none; cursor:pointer;">✓ ڈن کریں</button>` : 
+                    `<span class="status-btn reviewed">✓ فائل محفوظ</span>`}
+                </td>
+            </tr>
+        `;
+        proposalsBody.innerHTML += row;
     });
+});
+
+function markAsReviewed(id) {
+    if(confirm("کیا آپ اس رشتے کو 'دیکھ لیا/محفوظ' مارک کرنا چاہتے ہیں؟")) {
+        database.ref('proposals/' + id).update({ status: "Reviewed" });
+    }
 }
 </script>
 
