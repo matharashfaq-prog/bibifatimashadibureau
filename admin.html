@@ -13,7 +13,7 @@
             text-align: right;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: auto;
             background: white;
             padding: 25px;
@@ -22,13 +22,14 @@
         }
         h2 { color: #d81b60; border-bottom: 3px solid #d81b60; padding-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; vertical-align: middle; }
         th { background-color: #d81b60; color: white; }
         tr:nth-child(even) { background-color: #fbf0f3; }
         .status-btn { padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; }
         .pending { background-color: #ffc107; color: black; }
         .reviewed { background-color: #28a745; color: white; }
         .whatsapp-link { color: #128C7E; text-decoration: none; font-weight: bold; }
+        .user-img { width: 50px; height: 50px; border-radius: 5px; object-fit: cover; border: 1px solid #ccc; cursor: pointer; }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -37,26 +38,27 @@
 <body>
 
 <div class="container">
-    <h2>💍 بی بی فاطمہ شادی بیورو - موصول شدہ رشتے (ڈیش بورڈ)</h2>
+    <h2>💍 بی بی فاطمہ شادی بیورو - موصول شدہ رشتے (تصویروں کے ساتھ)</h2>
     
     <table id="proposalsTable">
         <thead>
             <tr>
-                <th>تاریخ / وقت</th>
+                <th>تاریخ</th>
+                <th>تصویر (Photo)</th>
                 <th>نام</th>
-                <th>جنس (Gender)</th>
-                <th>عمر (Age)</th>
-                <th>ذات (Caste)</th>
+                <th>جنس</th>
+                <th>عمر</th>
+                <th>ذات</th>
                 <th>تعلیم / نوکری</th>
-                <th>شہر (City)</th>
-                <th>ڈیمانڈ (Requirements)</th>
-                <th>رابطہ کریں</th>
+                <th>شہر</th>
+                <th>ڈیمانڈ</th>
+                <th>رابطہ</th>
                 <th>اسٹیٹس</th>
             </tr>
         </thead>
         <tbody id="proposalsBody">
             <tr>
-                <td colspan="10">رشتے لوڈ ہو رہے ہیں...</td>
+                <td colspan="11">رشتے لوڈ ہو رہے ہیں...</td>
             </tr>
         </tbody>
     </table>
@@ -82,33 +84,40 @@ database.ref('proposals').on('value', (snapshot) => {
     proposalsBody.innerHTML = ''; 
 
     if (!snapshot.exists()) {
-        proposalsBody.innerHTML = '<tr><td colspan="10">کوئی ریکارڈ موجود نہیں ہے۔</td></tr>';
+        proposalsBody.innerHTML = '<tr><td colspan="11">کوئی ریکارڈ موجود نہیں ہے۔</td></tr>';
         return;
     }
 
     const data = snapshot.val();
-    const ids = Object.keys(data).reverse(); // نیا رشتہ سب سے اوپر آئے گا
+    const ids = Object.keys(data).reverse(); 
 
     ids.forEach((id) => {
         const item = data[id];
         const statusClass = item.status === 'Pending' ? 'pending' : 'reviewed';
-        const statusText = item.status === 'Pending' ? 'پینڈنگ' : 'دیکھ لیا (Checked)';
+        const statusText = item.status === 'Pending' ? 'پینڈنگ' : 'دیکھ لیا';
+
+        // تصویر چیک کرنے کا لاجک
+        let imgHtml = "تصویر نہیں ہے";
+        if(item.photo_url && item.photo_url !== "کوئی تصویر نہیں") {
+            imgHtml = `<a href="${item.photo_url}" target="_blank"><img src="${item.photo_url}" class="user-img" title="بڑی تصویر دیکھنے کے لیے کلک کریں"><br><small style="color:blue;">دیکھیں</small></a>`;
+        }
 
         const row = `
             <tr>
-                <td>${item.registered_at || '---'}</td>
+                <td>${item.registered_at ? item.registered_at.split(',')[0] : '---'}</td>
+                <td>${imgHtml}</td>
                 <td><b>${item.name}</b></td>
                 <td><span style="color:#d81b60; font-weight:bold;">${item.gender}</span></td>
                 <td>${item.age} سال</td>
                 <td>${item.caste}</td>
                 <td>${item.education}</td>
                 <td>${item.location}</td>
-                <td style="max-width:200px; text-align:right;">${item.requirements}</td>
-                <td><a class="whatsapp-link" href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank">💬 واٹس ایپ چیٹ</a></td>
+                <td style="max-width:180px; text-align:right;">${item.requirements}</td>
+                <td><a class="whatsapp-link" href="https://wa.me/${item.phone.replace(/[^0-9]/g, '')}" target="_blank">💬 چیٹ</a></td>
                 <td>
                     ${item.status === 'Pending' ? 
                     `<button onclick="markAsReviewed('${id}')" class="status-btn pending" style="border:none; cursor:pointer;">✓ ڈن کریں</button>` : 
-                    `<span class="status-btn reviewed">✓ فائل محفوظ</span>`}
+                    `<span class="status-btn reviewed">✓ محفوظ</span>`}
                 </td>
             </tr>
         `;
@@ -117,7 +126,7 @@ database.ref('proposals').on('value', (snapshot) => {
 });
 
 function markAsReviewed(id) {
-    if(confirm("کیا آپ اس رشتے کو 'دیکھ لیا/محفوظ' مارک کرنا چاہتے ہیں؟")) {
+    if(confirm("کیا آپ اس ریکارڈ کو محفوظ مارک کرنا چاہتے ہیں؟")) {
         database.ref('proposals/' + id).update({ status: "Reviewed" });
     }
 }
