@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fce4ec; /* Soft Rose Background */
+            background-color: #fce4ec;
             text-align: right;
             padding: 20px;
             direction: rtl;
@@ -19,7 +19,7 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-top: 5px solid #d81b60; /* Premium Pink */
+            border-top: 5px solid #d81b60;
         }
         h2 { text-align: center; color: #d81b60; margin-bottom: 5px; font-size: 24px; }
         h4 { text-align: center; color: #555; margin-top: 0; margin-bottom: 25px; font-weight: normal; }
@@ -29,12 +29,28 @@
         input[type="text"], input[type="tel"], input[type="number"], select, textarea {
             width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; text-align: right;
         }
-        select { direction: rtl; }
-        textarea { resize: vertical; height: 80px; }
         button {
             width: 100%; background-color: #25D366; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 10px;
         }
         button:hover { background-color: #128C7E; }
+
+        /* فارم سبمٹ ہونے کے بعد کا خوبصورت نوٹیفیکیشن باکس */
+        .success-box {
+            display: none; 
+            background-color: #e8f5e9; 
+            border: 2px dashed #2e7d32; 
+            padding: 25px; 
+            border-radius: 12px; 
+            text-align: center; 
+            margin-top: 20px;
+        }
+        .success-box h3 { color: #2e7d32; margin-top: 0; font-size: 20px; }
+        .success-box p { color: #555; font-size: 14px; margin-bottom: 20px; }
+        .view-btn {
+            background-color: #d81b60;
+            color: white;
+        }
+        .view-btn:hover { background-color: #ad1457; }
     </style>
 
     <!-- فائر بیس لائبریریز -->
@@ -47,54 +63,65 @@
     <h2>بی بی فاطمہ شادی بیورو</h2>
     <h4>Bibi Fatima Shadi Bureau</h4>
     
-    <div class="form-group">
-        <label>پورا نام <span>/ Full Name:</span></label>
-        <input type="text" id="name" placeholder="اپنا نام لکھیں" required>
+    <!-- مین فارم فیلڈز (پہلا والا پرانا سادہ طریقہ) -->
+    <div id="formFields">
+        <div class="form-group">
+            <label>پورا نام <span>/ Full Name:</span></label>
+            <input type="text" id="name" placeholder="اپنا نام لکھیں" required>
+        </div>
+
+        <div class="form-group">
+            <label>فون نمبر (واٹس ایپ) <span>/ WhatsApp Number:</span></label>
+            <input type="tel" id="phone" placeholder="مثال: 03001234567" required>
+        </div>
+
+        <div class="form-group">
+            <label>رشتہ کس کے لیے مطلوب ہے؟ <span>/ Proposal For:</span></label>
+            <select id="gender" required>
+                <option value="">انتخاب کریں / Select</option>
+                <option value="Male (لڑکا)">لڑکا / Male</option>
+                <option value="Female (لڑکی)">لڑکی / Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>عمر <span>/ Age:</span></label>
+            <input type="number" id="age" placeholder="عمر درج کریں" required>
+        </div>
+
+        <div class="form-group">
+            <label>ذات یا برادری <span>/ Caste or Sect:</span></label>
+            <input type="text" id="caste" placeholder="مثال: جٹ، راجپوت، سید وغیرہ" required>
+        </div>
+
+        <div class="form-group">
+            <label>تعلیم اور ملازمت <span>/ Education & Job:</span></label>
+            <input type="text" id="education" placeholder="تعلیم اور کاروبار/ملازمت لکھیں" required>
+        </div>
+
+        <div class="form-group">
+            <label>شہر یا موجودہ لوکیشن <span>/ City or Location:</span></label>
+            <input type="text" id="location" placeholder="اپنا شہر یا پتہ لکھیں" required>
+        </div>
+
+        <div class="form-group">
+            <label>مطلوبہ رشتہ کی ڈیمانڈ <span>/ Requirements for Partner:</span></label>
+            <textarea id="requirements" placeholder="آپ کو کیسا رشتہ چاہیے؟ (عمر، تعلیم، ذات وغیرہ)" required></textarea>
+        </div>
+
+        <button onclick="sendProposal()">رشتہ رجسٹرڈ کریں / Register Proposal</button>
     </div>
 
-    <div class="form-group">
-        <label>فون نمبر (واٹس ایپ) <span>/ WhatsApp Number:</span></label>
-        <input type="tel" id="phone" placeholder="مثال: 03001234567" required>
+    <!-- 🌟 فارم جمع ہونے کے بعد یہ نوٹیفیکیشن اور نیا بٹن خود بخود شو ہوگا -->
+    <div id="successBox" class="success-box">
+        <h3>آپکا فارم رجسٹرڈ ہوگیا ہے! 🎉</h3>
+        <p>Your form has been registered successfully.</p>
+        <button class="view-btn" onclick="goToProposalsPage()">رشتے دیکھیں / See Proposals</button>
     </div>
-
-    <div class="form-group">
-        <label>رشتہ کس کے لیے مطلوب ہے؟ <span>/ Proposal For:</span></label>
-        <select id="gender" required>
-            <option value="">انتخاب کریں / Select</option>
-            <option value="Male (لڑکا)">لڑکا / Male</option>
-            <option value="Female (لڑکی)">لڑکی / Female</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>عمر <span>/ Age:</span></label>
-        <input type="number" id="age" min="18" max="70" placeholder="عمر درج کریں" required>
-    </div>
-
-    <div class="form-group">
-        <label>ذات یا برادری <span>/ Caste or Sect:</span></label>
-        <input type="text" id="caste" placeholder="مثال: جٹ، راجپوت، سید وغیرہ" required>
-    </div>
-
-    <div class="form-group">
-        <label>تعلیم اور ملازمت <span>/ Education & Job:</span></label>
-        <input type="text" id="education" placeholder="تعلیم اور کاروبار/ملازمت لکھیں" required>
-    </div>
-
-    <div class="form-group">
-        <label>شہر یا موجودہ لوکیشن <span>/ City or Location:</span></label>
-        <input type="text" id="location" placeholder="اپنا شہر یا پتہ لکھیں" required>
-    </div>
-
-    <div class="form-group">
-        <label>مطلوبہ رشتہ کی ڈیمانڈ <span>/ Requirements for Partner:</span></label>
-        <textarea id="requirements" placeholder="آپ کو کیسا رشتہ چاہیے؟ (عمر، تعلیم، ذات وغیرہ)" required></textarea>
-    </div>
-
-    <button onclick="sendProposal()">رشتہ رجسٹرڈ کریں / Register Proposal</button>
 </div>
 
 <script>
+// آپ کی فائر بیس سیٹنگز
 const firebaseConfig = {
   apiKey: "AIzaSyC8py3oEQFtzWIT_K0nIMK5oHoQYG6-zig",
   authDomain: "milk-order-48d48.firebaseapp.com",
@@ -110,25 +137,25 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 function sendProposal() {
-    const whatsappNumber = "923033183944"; 
-
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
+    const whatsappNumber = "923076385077"; 
+    
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
     const gender = document.getElementById('gender').value;
-    const age = document.getElementById('age').value;
-    const caste = document.getElementById('caste').value;
-    const education = document.getElementById('education').value;
-    const location = document.getElementById('location').value;
-    const requirements = document.getElementById('requirements').value;
+    const age = document.getElementById('age').value.trim();
+    const caste = document.getElementById('caste').value.trim();
+    const education = document.getElementById('education').value.trim();
+    const location = document.getElementById('location').value.trim();
+    const requirements = document.getElementById('requirements').value.trim();
 
     if(!name || !phone || !gender || !age || !caste || !education || !location || !requirements) {
-        alert("براہ کرم تمام معلومات درج کریں! / Please fill all fields!");
+        alert("⚠️ براہ کرم تمام معلومات درج کریں!");
         return;
     }
 
     const timestamp = new Date().toLocaleString("en-US", {timeZone: "Asia/Karachi"}); 
     
-    // فائر بیس میں نیا فولڈر 'proposals' بنے گا
+    // فائر بیس میں ڈیٹا بھیجنا
     database.ref('proposals').push({
         name: name,
         phone: phone,
@@ -142,25 +169,25 @@ function sendProposal() {
         registered_at: timestamp
     })
     .then(() => {
-        // واٹس ایپ میسج کی تیاری
-        const message = `*Bibi Fatima Shadi Bureau*\n` +
-                        `*جدید رشتہ رجسٹریشن فارم*\n\n` +
-                        `*نام / Name:* ${name}\n` +
-                        `*رابطہ / Phone:* ${phone}\n` +
-                        `*جنس / Gender:* ${gender}\n` +
-                        `*عمر / Age:* ${age} سال\n` +
-                        `*ذات / Caste:* ${caste}\n` +
-                        `*تعلیم و نوکری / Education:* ${education}\n` +
-                        `*شہر / City:* ${location}\n` +
-                        `*ڈیمانڈ / Requirements:* ${requirements}`;
+        // 1. براؤزر کی میموری میں جینڈر محفوظ کریں تاکہ اگلے پیج کو پتہ ہو کیا فلٹر کرنا ہے
+        localStorage.setItem('userGender', gender);
 
-        const encodedMessage = encodeURIComponent(message);
-        window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+        // 2. فارم کی فیلڈز غائب کریں اور کامیابی کا باکس دکھائیں
+        document.getElementById('formFields').style.display = 'none';
+        document.getElementById('successBox').style.display = 'block';
+
+        // 3. واٹس ایپ پر نوٹیفیکیشن بھیجنا
+        let message = `*Bibi Fatima Shadi Bureau*\n*رشتہ رجسٹریشن فارم*\n\n*نام:* ${name}\n*رابطہ:* ${phone}\n*جنس:* ${gender}\n*عمر:* ${age}\n*ذات:* ${caste}\n*شہر:* ${location}`;
+        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
     })
-    .catch((error) => {
-        console.error("Firebase Error: ", error);
-        alert("سسٹم میں خرابی ہے، لیکن آپ کا رشتہ واٹس ایپ پر بھیجا جا رہا ہے۔");
+    .catch((error) => { 
+        alert("❌ ڈیٹا محفوظ نہیں ہو سکا: " + error.message); 
     });
+}
+
+function goToProposalsPage() {
+    // جیسے ہی بٹن دبائیں گے یہ صارف کو گوگل سائن ان اور رشتوں والے پیج پر لے جائے گا
+    window.location.href = "view.html";
 }
 </script>
 
