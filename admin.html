@@ -3,83 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دودھ آرڈر مینجمنٹ - ایڈمن ڈیش بورڈ</title>
+    <title>Bibi Fatima Shadi Bureau - رشتہ رجسٹریشن فارم</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+            background-color: #fce4ec; /* Soft Rose Background */
+            text-align: right;
             padding: 20px;
             direction: rtl;
-            text-align: right;
         }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        .order-form {
+            background-color: #ffffff;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-top: 5px solid #d81b60; /* Premium Pink */
         }
-        h2 { color: #333; border-bottom: 2px solid #25D366; padding-bottom: 10px; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        h2 { text-align: center; color: #d81b60; margin-bottom: 5px; font-size: 24px; }
+        h4 { text-align: center; color: #555; margin-top: 0; margin-bottom: 25px; font-weight: normal; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: #333; font-size: 14px; }
+        label span { color: #888; font-weight: normal; font-size: 13px; }
+        input[type="text"], input[type="tel"], input[type="number"], select, textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; text-align: right;
         }
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: center;
+        select { direction: rtl; }
+        textarea { resize: vertical; height: 80px; }
+        button {
+            width: 100%; background-color: #25D366; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 10px;
         }
-        th { background-color: #25D366; color: white; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        .status-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .pending { background-color: #ffc107; color: black; }
-        .delivered { background-color: #28a745; color: white; }
-        .whatsapp-link {
-            color: #128C7E;
-            text-decoration: none;
-            font-weight: bold;
-        }
+        button:hover { background-color: #128C7E; }
     </style>
 
-    <!-- فائر بیس کی لائبریریز -->
+    <!-- فائر بیس لائبریریز -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<div class="container">
-    <h2>📥 موصول شدہ آرڈرز (لائیو ڈیش بورڈ)</h2>
+<div class="order-form">
+    <h2>بی بی فاطمہ شادی بیورو</h2>
+    <h4>Bibi Fatima Shadi Bureau</h4>
     
-    <table id="ordersTable">
-        <thead>
-            <tr>
-                <th>تاریخ اور وقت</th>
-                <th>گاہک کا نام</th>
-                <th>فون نمبر</th>
-                <th>لوکیشن (پتہ)</th>
-                <th>مقدار (کلو)</th>
-                <th>اسٹیٹس</th>
-                <th>ایکشن</th>
-            </tr>
-        </thead>
-        <tbody id="ordersBody">
-            <tr>
-                <td colspan="7">آرڈرز لوڈ ہو رہے ہیں...</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="form-group">
+        <label>پورا نام <span>/ Full Name:</span></label>
+        <input type="text" id="name" placeholder="اپنا نام لکھیں" required>
+    </div>
+
+    <div class="form-group">
+        <label>فون نمبر (واٹس ایپ) <span>/ WhatsApp Number:</span></label>
+        <input type="tel" id="phone" placeholder="مثال: 03001234567" required>
+    </div>
+
+    <div class="form-group">
+        <label>رشتہ کس کے لیے مطلوب ہے؟ <span>/ Proposal For:</span></label>
+        <select id="gender" required>
+            <option value="">انتخاب کریں / Select</option>
+            <option value="Male (لڑکا)">لڑکا / Male</option>
+            <option value="Female (لڑکی)">لڑکی / Female</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>عمر <span>/ Age:</span></label>
+        <input type="number" id="age" min="18" max="70" placeholder="عمر درج کریں" required>
+    </div>
+
+    <div class="form-group">
+        <label>ذات یا برادری <span>/ Caste or Sect:</span></label>
+        <input type="text" id="caste" placeholder="مثال: جٹ، راجپوت، سید وغیرہ" required>
+    </div>
+
+    <div class="form-group">
+        <label>تعلیم اور ملازمت <span>/ Education & Job:</span></label>
+        <input type="text" id="education" placeholder="تعلیم اور کاروبار/ملازمت لکھیں" required>
+    </div>
+
+    <div class="form-group">
+        <label>شہر یا موجودہ لوکیشن <span>/ City or Location:</span></label>
+        <input type="text" id="location" placeholder="اپنا شہر یا پتہ لکھیں" required>
+    </div>
+
+    <div class="form-group">
+        <label>مطلوبہ رشتہ کی ڈیمانڈ <span>/ Requirements for Partner:</span></label>
+        <textarea id="requirements" placeholder="آپ کو کیسا رشتہ چاہیے؟ (عمر، تعلیم، ذات وغیرہ)" required></textarea>
+    </div>
+
+    <button onclick="sendProposal()">رشتہ رجسٹرڈ کریں / Register Proposal</button>
 </div>
 
 <script>
-// آپ کے فائر بیس پروجیکٹ کی سیٹنگز
 const firebaseConfig = {
   apiKey: "AIzaSyC8py3oEQFtzWIT_K0nIMK5oHoQYG6-zig",
   authDomain: "milk-order-48d48.firebaseapp.com",
@@ -91,58 +106,61 @@ const firebaseConfig = {
   measurementId: "G-KEVF788FZ0"
 };
 
-// فائر بیس شروع کریں
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// فائر بیس سے لائیو ڈیٹا حاصل کریں
-database.ref('orders').on('value', (snapshot) => {
-    const ordersBody = document.getElementById('ordersBody');
-    ordersBody.innerHTML = ''; // پرانا ڈیٹا صاف کریں
+function sendProposal() {
+    const whatsappNumber = "923076385077"; 
 
-    if (!snapshot.exists()) {
-        ordersBody.innerHTML = '<tr><td colspan="7">کوئی آرڈر موجود نہیں ہے۔</td></tr>';
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const gender = document.getElementById('gender').value;
+    const age = document.getElementById('age').value;
+    const caste = document.getElementById('caste').value;
+    const education = document.getElementById('education').value;
+    const location = document.getElementById('location').value;
+    const requirements = document.getElementById('requirements').value;
+
+    if(!name || !phone || !gender || !age || !caste || !education || !location || !requirements) {
+        alert("براہ کرم تمام معلومات درج کریں! / Please fill all fields!");
         return;
     }
 
-    const data = snapshot.val();
+    const timestamp = new Date().toLocaleString("en-US", {timeZone: "Asia/Karachi"}); 
     
-    // آرڈرز کو الٹا ترتیب دیں تاکہ نیا آرڈر سب سے اوپر آئے
-    const orderIds = Object.keys(data).reverse();
+    // فائر بیس میں نیا فولڈر 'proposals' بنے گا
+    database.ref('proposals').push({
+        name: name,
+        phone: phone,
+        gender: gender,
+        age: age,
+        caste: caste,
+        education: education,
+        location: location,
+        requirements: requirements,
+        status: "Pending",
+        registered_at: timestamp
+    })
+    .then(() => {
+        // واٹس ایپ میسج کی تیاری
+        const message = `*Bibi Fatima Shadi Bureau*\n` +
+                        `*جدید رشتہ رجسٹریشن فارم*\n\n` +
+                        `*نام / Name:* ${name}\n` +
+                        `*رابطہ / Phone:* ${phone}\n` +
+                        `*جنس / Gender:* ${gender}\n` +
+                        `*عمر / Age:* ${age} سال\n` +
+                        `*ذات / Caste:* ${caste}\n` +
+                        `*تعلیم و نوکری / Education:* ${education}\n` +
+                        `*شہر / City:* ${location}\n` +
+                        `*ڈیمانڈ / Requirements:* ${requirements}`;
 
-    orderIds.forEach((id) => {
-        const order = data[id];
-        
-        // اسٹیٹس کے حساب سے کلاس کا انتخاب کریں
-        const statusClass = order.status === 'Pending' ? 'pending' : 'delivered';
-        const statusText = order.status === 'Pending' ? 'باقی ہے (Pending)' : 'پہنچ گیا (Delivered)';
-
-        const row = `
-            <tr>
-                <td>${order.ordered_at || '---'}</td>
-                <td><b>${order.customer_name}</b></td>
-                <td><a class="whatsapp-link" href="https://wa.me/${order.customer_phone.replace(/[^0-9]/g, '')}" target="_blank">💬 ${order.customer_phone}</a></td>
-                <td>${order.customer_location}</td>
-                <td><span style="color:blue; font-weight:bold;">${order.milk_quantity} کلو</span></td>
-                <td><span class="status-btn ${statusClass}">${statusText}</span></td>
-                <td>
-                    ${order.status === 'Pending' ? 
-                    `<button onclick="markAsDelivered('${id}')" style="background:#28a745; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;">Delivered کریں</button>` : 
-                    `<span style="color:green;">✓ مکمل</span>`}
-                </td>
-            </tr>
-        `;
-        ordersBody.innerHTML += row;
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+    })
+    .catch((error) => {
+        console.error("Firebase Error: ", error);
+        alert("سسٹم میں خرابی ہے، لیکن آپ کا رشتہ واٹس ایپ پر بھیجا جا رہا ہے۔");
     });
-});
-
-// آرڈر کو ڈیلیورڈ مارک کرنے کا فنکشن
-function markAsDelivered(orderId) {
-    if(confirm("کیا آپ اس آرڈر کو 'ڈیلیورڈ' مارک کرنا چاہتے ہیں؟")) {
-        database.ref('orders/' + orderId).update({
-            status: "Delivered"
-        });
-    }
 }
 </script>
 
