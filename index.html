@@ -29,12 +29,20 @@
         input[type="text"], input[type="tel"], input[type="number"], select, textarea {
             width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; text-align: right;
         }
-        button {
+        
+        /* گرین واٹس ایپ بٹن کا اسٹائل */
+        .submit-btn {
             width: 100%; background-color: #25D366; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 10px;
         }
-        button:hover { background-color: #128C7E; }
+        .submit-btn:hover { background-color: #128C7E; }
 
-        /* فارم سبمٹ ہونے کے بعد کا خوبصورت نوٹیفیکیشن باکس */
+        /* 🔵 نئے "رشتے دیکھیں" والے بٹن کا اسٹائل */
+        .check-btn {
+            width: 100%; background-color: #0288d1; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 12px;
+        }
+        .check-btn:hover { background-color: #01579b; }
+
+        /* فارم سبمٹ ہونے کے بعد کا نوٹیفیکیشن باکس */
         .success-box {
             display: none; 
             background-color: #e8f5e9; 
@@ -47,8 +55,7 @@
         .success-box h3 { color: #2e7d32; margin-top: 0; font-size: 20px; }
         .success-box p { color: #555; font-size: 14px; margin-bottom: 20px; }
         .view-btn {
-            background-color: #d81b60;
-            color: white;
+            width: 100%; background-color: #d81b60; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;
         }
         .view-btn:hover { background-color: #ad1457; }
     </style>
@@ -63,7 +70,7 @@
     <h2>بی بی فاطمہ شادی بیورو</h2>
     <h4>Bibi Fatima Shadi Bureau</h4>
     
-    <!-- مین فارم فیلڈز (پہلا والا پرانا سادہ طریقہ) -->
+    <!-- مین فارم فیلڈز -->
     <div id="formFields">
         <div class="form-group">
             <label>پورا نام <span>/ Full Name:</span></label>
@@ -109,10 +116,14 @@
             <textarea id="requirements" placeholder="آپ کو کیسا رشتہ چاہیے؟ (عمر، تعلیم، ذات وغیرہ)" required></textarea>
         </div>
 
-        <button onclick="sendProposal()">رشتہ رجسٹرڈ کریں / Register Proposal</button>
+        <!-- 🟢 فارم جمع کرنے کا گرین بٹن -->
+        <button class="submit-btn" onclick="sendProposal()">رشتہ رجسٹرڈ کریں / Register Proposal</button>
+        
+        <!-- 🔵 نیا بٹن: رشتے دیکھنے کے لیے سیکیورٹی چیک -->
+        <button class="check-btn" onclick="checkAndGoToProposals()">رشتے دیکھیں / See Proposals</button>
     </div>
 
-    <!-- 🌟 فارم جمع ہونے کے بعد یہ نوٹیفیکیشن اور نیا بٹن خود بخود شو ہوگا -->
+    <!-- فارم جمع ہونے کے بعد یہ نوٹیفیکیشن اور فائنل بٹن خود بخود شو ہوگا -->
     <div id="successBox" class="success-box">
         <h3>آپکا فارم رجسٹرڈ ہوگیا ہے! 🎉</h3>
         <p>Your form has been registered successfully.</p>
@@ -137,7 +148,7 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 function sendProposal() {
-    const whatsappNumber = "923033183944"; 
+    const whatsappNumber = "923076385077"; 
     
     const name = document.getElementById('name').value.trim();
     const phone = document.getElementById('phone').value.trim();
@@ -169,14 +180,15 @@ function sendProposal() {
         registered_at: timestamp
     })
     .then(() => {
-        // 1. براؤزر کی میموری میں جینڈر محفوظ کریں تاکہ اگلے پیج کو پتہ ہو کیا فلٹر کرنا ہے
+        // 1. براؤزر کی میموری میں ڈیٹا سیو کریں کہ فارم سبمٹ ہو چکا ہے
         localStorage.setItem('userGender', gender);
+        localStorage.setItem('isRegistered', 'true');
 
         // 2. فارم کی فیلڈز غائب کریں اور کامیابی کا باکس دکھائیں
         document.getElementById('formFields').style.display = 'none';
         document.getElementById('successBox').style.display = 'block';
 
-        // 3. واٹس ایپ پر نوٹیفیکیشن بھیجنا
+        // 3. واٹس ایپ پر نوٹیفیکیشن بھیجنا (پرانا طریقہ کار چالو ہے)
         let message = `*Bibi Fatima Shadi Bureau*\n*رشتہ رجسٹریشن فارم*\n\n*نام:* ${name}\n*رابطہ:* ${phone}\n*جنس:* ${gender}\n*عمر:* ${age}\n*ذات:* ${caste}\n*شہر:* ${location}`;
         window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
     })
@@ -185,8 +197,20 @@ function sendProposal() {
     });
 }
 
+// 🔵 نیا فنکشن: جو گاہک فارم بھرے بغیر بٹن دبائے گا اسے روکے گا
+function checkAndGoToProposals() {
+    const isRegistered = localStorage.getItem('isRegistered');
+    
+    if (isRegistered === 'true') {
+        // اگر فارم پہلے سے رجسٹرڈ ہے تو سیدھا رشتوں والے پیج پر بھیج دیں
+        window.location.href = "view.html";
+    } else {
+        // اگر فارم نہیں بھرا، تو الرٹ نوٹیفیکیشن دکھائیں
+        alert("⚠️ رشتے دیکھنے کے لیے پہلے اپنا فارم رجسٹرڈ کرنا لازمی ہے!\nPlease register your form first to view proposals!");
+    }
+}
+
 function goToProposalsPage() {
-    // جیسے ہی بٹن دبائیں گے یہ صارف کو گوگل سائن ان اور رشتوں والے پیج پر لے جائے گا
     window.location.href = "view.html";
 }
 </script>
