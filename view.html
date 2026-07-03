@@ -7,15 +7,22 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fce4ec; text-align: right; padding: 20px; direction: rtl; }
         .container { background-color: #ffffff; max-width: 600px; margin: 20px auto; padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border-top: 5px solid #d81b60; }
-        h2 { text-align: center; color: #d81b60; }
-        .login-box { text-align: center; padding: 30px 10px; }
-        .verify-btn { background-color: #d81b60; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+        h2 { text-align: center; color: #d81b60; font-weight: bold; }
+        .login-box { text-align: center; padding: 20px 10px; }
+        .verify-btn { background-color: #d81b60; color: white; padding: 14px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; font-family: inherit; }
         .verify-btn:hover { background-color: #ad1457; }
-        .proposal-card { background: #fff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        
+        /* 📜 نوٹ اور نئے واٹس ایپ بٹن کا اسٹائل */
+        .note-box { background-color: #fff3e0; border-right: 4px solid #ff9800; padding: 15px; border-radius: 6px; margin-top: 25px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .note-box p { margin: 4px 0; color: #e65100; font-size: 14px; font-weight: bold; line-height: 1.6; }
+        .wa-admin-btn { display: inline-block; background-color: #25D366; color: white; padding: 12px 20px; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; text-decoration: none; margin-top: 12px; width: 90%; box-sizing: border-box; transition: background 0.3s; }
+        .wa-admin-btn:hover { background-color: #128C7E; }
+
+        .proposal-card { background: #fff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: right; }
         .proposal-card h3 { margin-top: 0; color: #d81b60; font-size: 18px; }
         .proposal-card p { margin: 6px 0; color: #444; font-size: 14px; }
         .gender-tag { display: inline-block; background: #f1f1f1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 18px; text-align: center; letter-spacing: 2px; }
+        input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 18px; text-align: center; letter-spacing: 3px; }
     </style>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -26,13 +33,22 @@
     <h2>بی بی فاطمہ شادی بیورو - رشتے</h2>
 
     <div id="lockSection" class="login-box">
-        <p style="font-size: 16px; color: #555; margin-bottom: 20px;">رشتے دیکھنے کے لیے ایڈمن کا دیا ہوا رجسٹریشن نمبر درج کریں:</p>
-        <input type="text" id="regInput" placeholder="مثال: FB-12345">
-        <button class="verify-btn" onclick="verifyRegistrationNumber()">نمبر تصدیق کریں اور رشتے دیکھیں</button>
+        <p style="font-size: 15px; color: #333; margin-bottom: 15px; font-weight: bold;">رشتے دیکھنے کے لیے رجسٹریشن نمبر درج کریں / Enter Registration Number:</p>
+        <input type="text" id="regInput" placeholder="مثال: 12345">
+        <button class="verify-btn" onclick="verifyRegistrationNumber()">نمبر تصدیق کریں / Verify Number</button>
+
+        <div class="note-box">
+            <p>اپنا رجسٹریشن نمبر ہمارے نمائندے سے حاصل کریں۔</p>
+            <p style="font-size: 13px; font-weight: normal; font-style: italic; color: #666;">Get your registration number from our representative.</p>
+            
+            <a href="https://wa.me/923033183944?text=%D8%A7%D9%8A%D9%86%D8%AF%20%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%DA%A9%D9%85%D8%8C%20%D9%85%D8%AC%DA%BE%DB%92%20%D8%B1%D8%B4%D8%AA%D9%88%DA%BA%20%DA%A9%DB%8C%20%D9%84%D8%B3%D9%82%20%D8%AF%DB%8C%DA%A9%DA%BE%D9%86%DB%92%20%DA%A9%DB%92%20%D9%84%D9%8A%DB%92%20%D8%B1%D8%AC%D8%B3%D9%BE%D8%B1%DB%8C%D8%B4%D9%86%20%D9%86%D9%85%D8%A8%D8%B1%20%DA%86%D8%A7%DB%81%D9%8A%DB%92%E2%9D%A4%EF%B8%8F" target="_blank" class="wa-admin-btn">
+                💬 واٹس ایپ پر رابطہ کریں / Contact via WhatsApp
+            </a>
+        </div>
     </div>
 
     <div id="proposalsSection" style="display: none;">
-        <h3 style="color: #2e7d32; border-bottom: 2px solid #fce4ec; padding-bottom: 10px;">✅ آپ کا رجسٹریشن نمبر درست ہے!</h3>
+        <h3 style="color: #2e7d32; border-bottom: 2px solid #fce4ec; padding-bottom: 10px;">✅ کوڈ درست ہے! / Access Granted!</h3>
         <div id="proposalsList">
             <p style="text-align: center; color: #888;">رشتے لوڈ ہو رہے ہیں...</p>
         </div>
@@ -53,33 +69,26 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// 🔑 نمبر چیک کرنے کا فنکشن
 function verifyRegistrationNumber() {
-    const inputCode = document.getElementById('regInput').value.trim().toUpperCase();
+    const inputCode = document.getElementById('regInput').value.trim();
     
     if(!inputCode) {
-        alert("⚠️ براہ کرم رجسٹریشن نمبر درج کریں!");
+        alert("⚠️ رجسٹریشن نمبر درج کریں! / Please enter number!");
         return;
     }
 
-    // فائر بیس میں چیک کریں کہ کیا یہ نمبر کسی کسٹمر کا ہے؟
+    // فائر بیس میں خالص نمبر میچ کرنا
     database.ref('proposals').orderByChild('reg_no').equalTo(inputCode).once('value')
     .then((snapshot) => {
         if (snapshot.exists()) {
-            // اگر نمبر میچ ہو گیا تو لاک کھول دیں
             document.getElementById('lockSection').style.display = 'none';
             document.getElementById('proposalsSection').style.display = 'block';
-            
-            // رشتے لوڈ کریں
             loadProposalsData();
         } else {
-            // اگر نمبر غلط ہوا
-            alert("❌ غلط رجسٹریشن نمبر! براہ کرم درست نمبر درج کریں یا ایڈمن سے رابطہ کریں۔");
+            alert("❌ غلط رجسٹریشن نمبر! اپنے نمائندے سے درست نمبر حاصل کریں۔ / Invalid Code!");
         }
     })
-    .catch((error) => {
-        alert("ایرر: " + error.message);
-    });
+    .catch((error) => { alert("Error: " + error.message); });
 }
 
 function loadProposalsData() {
@@ -99,7 +108,6 @@ function loadProposalsData() {
         snapshot.forEach((childSnapshot) => {
             const proposal = childSnapshot.val();
             
-            // اپوزٹ جینڈر فلٹر
             let showThis = false;
             if (userGender === "Male (لڑکا)" && proposal.gender === "Female (لڑکی)") showThis = true;
             if (userGender === "Female (لڑکی)" && proposal.gender === "Male (لڑکا)") showThis = true;
@@ -110,11 +118,11 @@ function loadProposalsData() {
                 const card = `
                     <div class="proposal-card">
                         <h3>رشتہ کوڈ: ${childSnapshot.key.substring(1, 6).toUpperCase()}</h3>
-                        <p><strong>عمر:</strong> ${proposal.age} سال</p>
-                        <p><strong>ذات/برادری:</strong> ${proposal.caste}</p>
-                        <p><strong>تعلیم و ملازمت:</strong> ${proposal.education}</p>
-                        <p><strong>شہر:</strong> ${proposal.location}</p>
-                        <p><strong>ڈیمانڈ/ضروریات:</strong> ${proposal.requirements}</p>
+                        <p><strong>عمر / Age:</strong> ${proposal.age} سال</p>
+                        <p><strong>ذات / Caste:</strong> ${proposal.caste}</p>
+                        <p><strong>تعلیم و ملازمت / Education:</strong> ${proposal.education}</p>
+                        <p><strong>شہر / City:</strong> ${proposal.location}</p>
+                        <p><strong>ضروریات / Requirements:</strong> ${proposal.requirements}</p>
                         <span class="gender-tag">${proposal.gender}</span>
                     </div>
                 `;
@@ -123,7 +131,7 @@ function loadProposalsData() {
         });
 
         if (!hasData) {
-            listDiv.innerHTML = "<p style='text-align:center; color:#888;'>آپ کے لیے مطلوبہ رشتے ابھی موجود نہیں ہیں۔</p>";
+            listDiv.innerHTML = "<p style='text-align:center; color:#888;'>مطلوبہ رشتے ابھی موجود نہیں ہیں۔</p>";
         }
     });
 }
