@@ -5,96 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bibi Fatima Shadi Bureau - رشتے دیکھیں</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fce4ec;
-            text-align: right;
-            padding: 20px;
-            direction: rtl;
-        }
-        .container {
-            background-color: #ffffff;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-top: 5px solid #d81b60;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fce4ec; text-align: right; padding: 20px; direction: rtl; }
+        .container { background-color: #ffffff; max-width: 600px; margin: 20px auto; padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border-top: 5px solid #d81b60; }
         h2 { text-align: center; color: #d81b60; }
-        
-        /* 🔐 Login Section Style */
-        .login-box {
-            text-align: center;
-            padding: 40px 20px;
-        }
-        .google-btn {
-            background-color: #4285F4;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: background 0.3s;
-        }
-        .google-btn:hover { background-color: #357AE8; }
-
-        /* 👤 User Profile Header Style */
-        .user-profile {
-            display: flex;
-            align-items: center;
-            background-color: #f9f9f9;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #eee;
-        }
-        .user-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-left: 15px;
-            border: 2px solid #d81b60;
-        }
-        .user-info h4 { margin: 0; color: #333; }
-        .user-info p { margin: 4px 0 0 0; font-size: 12px; color: #777; }
-        
-        .logout-btn {
-            margin-right: auto;
-            background: #e0e0e0;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        /* 📋 Proposals List Style */
-        .proposal-card {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+        .login-box { text-align: center; padding: 30px 10px; }
+        .verify-btn { background-color: #d81b60; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; }
+        .verify-btn:hover { background-color: #ad1457; }
+        .proposal-card { background: #fff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .proposal-card h3 { margin-top: 0; color: #d81b60; font-size: 18px; }
         .proposal-card p { margin: 6px 0; color: #444; font-size: 14px; }
-        .gender-tag {
-            display: inline-block;
-            background: #f1f1f1;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+        .gender-tag { display: inline-block; background: #f1f1f1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 18px; text-align: center; letter-spacing: 2px; }
     </style>
-
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
 <body>
@@ -102,24 +25,14 @@
 <div class="container">
     <h2>بی بی فاطمہ شادی بیورو - رشتے</h2>
 
-    <div id="loginSection" class="login-box">
-        <p style="font-size: 16px; color: #555; margin-bottom: 25px;">رشتے دیکھنے کے لیے پہلے اپنے گوگل اکاؤنٹ سے سائن ان کریں:</p>
-        <button class="google-btn" onclick="signInWithGoogle()">Google کے ساتھ سائن ان کریں</button>
+    <div id="lockSection" class="login-box">
+        <p style="font-size: 16px; color: #555; margin-bottom: 20px;">رشتے دیکھنے کے لیے ایڈمن کا دیا ہوا رجسٹریشن نمبر درج کریں:</p>
+        <input type="text" id="regInput" placeholder="مثال: FB-12345">
+        <button class="verify-btn" onclick="verifyRegistrationNumber()">نمبر تصدیق کریں اور رشتے دیکھیں</button>
     </div>
 
     <div id="proposalsSection" style="display: none;">
-        
-        <div class="user-profile">
-            <img id="userImg" class="user-img" src="" alt="Profile">
-            <div class="user-info">
-                <h4 id="userName">Loading...</h4>
-                <p id="userEmail"></p>
-            </div>
-            <button class="logout-btn" onclick="signOut()">Log Out</button>
-        </div>
-
-        <h3 style="color: #333; border-bottom: 2px solid #fce4ec; padding-bottom: 10px;">آپ کے لیے مطلوبہ رشتے:</h3>
-        
+        <h3 style="color: #2e7d32; border-bottom: 2px solid #fce4ec; padding-bottom: 10px;">✅ آپ کا رجسٹریشن نمبر درست ہے!</h3>
         <div id="proposalsList">
             <p style="text-align: center; color: #888;">رشتے لوڈ ہو رہے ہیں...</p>
         </div>
@@ -127,7 +40,6 @@
 </div>
 
 <script>
-// Aap ki Firebase settings
 const firebaseConfig = {
   apiKey: "AIzaSyC8py3oEQFtzWIT_K0nIMK5oHoQYG6-zig",
   authDomain: "milk-order-48d48.firebaseapp.com",
@@ -135,60 +47,50 @@ const firebaseConfig = {
   projectId: "milk-order-48d48",
   storageBucket: "milk-order-48d48.firebasestorage.app",
   messagingSenderId: "171586337857",
-  appId: "1:171586337857:web:4e16c73f163089460e9ac0",
-  measurementId: "G-KEVF788FZ0"
+  appId: "1:171586337857:web:4e16c73f163089460e9ac0"
 };
 
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 const database = firebase.database();
 
-// 🚀 1. Google Sign-In Function
-// 🚀 1. Google Sign-In Function (موبائل فرینڈلی ری ڈائریکٹ طریقہ)
-function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithRedirect(provider);
-}
-    .then((result) => {
-        console.log("Login Successful!", result.user);
+// 🔑 نمبر چیک کرنے کا فنکشن
+function verifyRegistrationNumber() {
+    const inputCode = document.getElementById('regInput').value.trim().toUpperCase();
+    
+    if(!inputCode) {
+        alert("⚠️ براہ کرم رجسٹریشن نمبر درج کریں!");
+        return;
+    }
+
+    // فائر بیس میں چیک کریں کہ کیا یہ نمبر کسی کسٹمر کا ہے؟
+    database.ref('proposals').orderByChild('reg_no').equalTo(inputCode).once('value')
+    .then((snapshot) => {
+        if (snapshot.exists()) {
+            // اگر نمبر میچ ہو گیا تو لاک کھول دیں
+            document.getElementById('lockSection').style.display = 'none';
+            document.getElementById('proposalsSection').style.display = 'block';
+            
+            // رشتے لوڈ کریں
+            loadProposalsData();
+        } else {
+            // اگر نمبر غلط ہوا
+            alert("❌ غلط رجسٹریشن نمبر! براہ کرم درست نمبر درج کریں یا ایڈمن سے رابطہ کریں۔");
+        }
     })
     .catch((error) => {
-        console.error("Error during sign in:", error);
-        alert("❌ Google Sign-In mein masla hai: " + error.message);
+        alert("ایرر: " + error.message);
     });
 }
 
-// 🔄 2. Monitor Auth State (Naam aur Profile Link load karne ka Asli Code)
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        // Agar user login ho chuka hai:
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('proposalsSection').style.display = 'block';
-        
-        // 🌟 Yahan Google se naam aur profile picture lekar load ho rahi hai
-        document.getElementById('userName').innerText = "خوش آمدید، " + user.displayName;
-        document.getElementById('userEmail').innerText = user.email;
-        document.getElementById('userImg').src = user.photoURL || "https://via.placeholder.com/150";
-
-        // Rishte load karne wala function chalayein
-        loadProposalsData();
-    } else {
-        // Agar user login nahi hai:
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('proposalsSection').style.display = 'none';
-    }
-});
-
-// 📋 3. Database se Rishte load karne aur Filter karne ka function
 function loadProposalsData() {
-    const userGender = localStorage.getItem('userGender'); // index.html se jo gender bacha tha
+    const userGender = localStorage.getItem('userGender');
     const listDiv = document.getElementById('proposalsList');
     
     database.ref('proposals').on('value', (snapshot) => {
-        listDiv.innerHTML = ""; // Purana data saaf karein
+        listDiv.innerHTML = "";
         
         if (!snapshot.exists()) {
-            listDiv.innerHTML = "<p style='text-align:center; color:#888;'>Abhi koi rishta mojud nahi hai.</p>";
+            listDiv.innerHTML = "<p style='text-align:center; color:#888;'>ابھی کوئی رشتہ موجود نہیں ہے۔</p>";
             return;
         }
 
@@ -197,13 +99,10 @@ function loadProposalsData() {
         snapshot.forEach((childSnapshot) => {
             const proposal = childSnapshot.val();
             
-            // 🎯 Opposite Gender Filter Logic:
-            // Agar user ne form mein 'Male (لڑکا)' select kiya tha, toh use sirf 'Female (لڑکی)' ke rishte dikhein.
+            // اپوزٹ جینڈر فلٹر
             let showThis = false;
             if (userGender === "Male (لڑکا)" && proposal.gender === "Female (لڑکی)") showThis = true;
             if (userGender === "Female (لڑکی)" && proposal.gender === "Male (لڑکا)") showThis = true;
-            
-            // Agar koi filter nahi mila (direct page khola), toh saare dikha dein
             if (!userGender) showThis = true;
 
             if (showThis) {
@@ -224,20 +123,10 @@ function loadProposalsData() {
         });
 
         if (!hasData) {
-            listDiv.innerHTML = "<p style='text-align:center; color:#888;'>Aap ke liye matlooba rishye abhi mojud nahi hain.</p>";
+            listDiv.innerHTML = "<p style='text-align:center; color:#888;'>آپ کے لیے مطلوبہ رشتے ابھی موجود نہیں ہیں۔</p>";
         }
     });
 }
-
-// 🚪 4. Log Out Function
-function signOut() {
-    auth.signOut().then(() => {
-        localStorage.removeItem('isRegistered');
-        localStorage.removeItem('userGender');
-        window.location.href = "index.html";
-    });
-}
 </script>
-
 </body>
 </html>
